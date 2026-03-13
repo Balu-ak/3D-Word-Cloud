@@ -278,6 +278,22 @@ a {
   color: rgba(236, 239, 248, 0.74);
 }
 
+.stage-overlay-label {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  z-index: 2;
+  padding: 8px 12px;
+  border: 1px solid rgba(142, 216, 255, 0.2);
+  border-radius: 999px;
+  background: rgba(6, 12, 23, 0.62);
+  color: rgba(231, 247, 255, 0.86);
+  font-size: 0.76rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  pointer-events: none;
+}
+
 .stage-canvas {
   position: absolute;
   inset: 0;

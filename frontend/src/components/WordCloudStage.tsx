@@ -1,6 +1,6 @@
-import { Suspense, useRef, useState } from "react";
+import { Suspense, useEffect, useRef, useState } from "react";
 
-import { Text } from "@react-three/drei";
+import { OrbitControls, Text } from "@react-three/drei";
 import { Canvas, useFrame } from "@react-three/fiber";
 import type { Group } from "three";
 
@@ -41,6 +41,7 @@ export default function WordCloudStage({
         <div className="orbit orbit-a" />
         <div className="orbit orbit-b" />
         <div className="orbit orbit-c" />
+        <div className="stage-overlay-label">Article Semantic Map</div>
 
         {isLoading ? (
           <p className="stage-placeholder">Building the topic map...</p>
@@ -63,13 +64,21 @@ export default function WordCloudStage({
           <div className="stage-canvas">
             <Canvas camera={{ position: [0, 0, 8], fov: 42 }} dpr={[1, 1.75]}>
               <color attach="background" args={["#07101d"]} />
-              <ambientLight intensity={1.15} />
-              <directionalLight position={[4, 5, 6]} intensity={1.5} />
-              <directionalLight position={[-4, -2, 4]} intensity={0.5} />
+              <fog attach="fog" args={["#07101d", 6, 16]} />
+              <ambientLight intensity={1.1} />
+              <directionalLight position={[4, 5, 6]} intensity={0.9} />
+              <directionalLight position={[-4, -2, 4]} intensity={0.45} />
 
               <Suspense fallback={null}>
                 <WordCloudScene words={analysis.word_cloud} />
               </Suspense>
+
+              <OrbitControls
+                enablePan={false}
+                enableZoom
+                maxDistance={12}
+                minDistance={4}
+              />
             </Canvas>
           </div>
         ) : null}
@@ -90,7 +99,7 @@ function WordCloudScene({
       return;
     }
 
-    cloudRef.current.rotation.y += delta * 0.12;
+    cloudRef.current.rotation.y += delta * 0.07;
     cloudRef.current.rotation.x = Math.sin(state.clock.elapsedTime * 0.22) * 0.12;
   });
 
@@ -113,13 +122,20 @@ function WordNode({ index, total, weight, word }: WordNodeProps) {
   const [isHovered, setIsHovered] = useState(false);
   const groupRef = useRef<Group | null>(null);
   const basePosition = getWordPosition(index, total);
+  const baseRotation = getWordRotation(index);
+
+  useEffect(() => {
+    return () => {
+      document.body.style.cursor = "default";
+    };
+  }, []);
 
   useFrame((state) => {
     if (!groupRef.current) {
       return;
     }
 
-    const floatOffset = Math.sin(state.clock.elapsedTime * 1.1 + index * 0.6) * 0.08;
+    const floatOffset = Math.sin(state.clock.elapsedTime * 1.1 + index * 0.6) * 0.07;
     const targetScale = isHovered ? 1.15 : 1;
     const currentScale = groupRef.current.scale.x;
     const easedScale = currentScale + (targetScale - currentScale) * 0.12;
@@ -133,16 +149,20 @@ function WordNode({ index, total, weight, word }: WordNodeProps) {
   });
 
   return (
-    <group ref={groupRef} position={basePosition}>
+    <group ref={groupRef} position={basePosition} rotation={baseRotation}>
       <Text
         anchorX="center"
         anchorY="middle"
         color={getWordColor(weight, isHovered)}
-        fontSize={0.38 + weight * 0.65}
+        fontSize={0.35 + weight * 0.9}
         maxWidth={4.4}
-        onPointerOut={() => setIsHovered(false)}
+        onPointerOut={() => {
+          document.body.style.cursor = "default";
+          setIsHovered(false);
+        }}
         onPointerOver={(event) => {
           event.stopPropagation();
+          document.body.style.cursor = "pointer";
           setIsHovered(true);
         }}
       >
@@ -157,13 +177,21 @@ function getWordPosition(index: number, total: number): [number, number, number]
   const progress = (index + 0.5) / safeTotal;
   const polar = Math.acos(1 - 2 * progress);
   const azimuth = GOLDEN_ANGLE * (index + 1);
-  const radius = 2.4 + (index % 4) * 0.18;
+  const radius = 2.8 + (index % 4) * 0.22;
 
   return [
     radius * Math.cos(azimuth) * Math.sin(polar),
     radius * Math.cos(polar) * 0.82,
     radius * Math.sin(azimuth) * Math.sin(polar),
   ];
+}
+
+function getWordRotation(index: number): [number, number, number] {
+  const tiltX = Math.sin(index * 1.7) * 0.16;
+  const tiltY = Math.cos(index * 1.3) * 0.18;
+  const tiltZ = Math.sin(index * 0.9) * 0.08;
+
+  return [tiltX, tiltY, tiltZ];
 }
 
 function getWordColor(weight: number, isHovered: boolean): string {
