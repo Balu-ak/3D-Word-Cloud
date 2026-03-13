@@ -1,0 +1,368 @@
+:root {
+  color-scheme: dark;
+  font-family: "Avenir Next", "Segoe UI", sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+  background:
+    radial-gradient(circle at top left, rgba(255, 185, 117, 0.24), transparent 28%),
+    radial-gradient(circle at top right, rgba(89, 211, 255, 0.18), transparent 32%),
+    linear-gradient(145deg, #0d1423 10%, #111a2e 48%, #09111f 100%);
+  color: #f3f4f8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: transparent;
+}
+
+button,
+input {
+  font: inherit;
+}
+
+a {
+  color: #8ed8ff;
+}
+
+#root {
+  min-height: 100vh;
+}
+
+.app-shell {
+  position: relative;
+  overflow: hidden;
+  min-height: 100vh;
+  padding: 32px;
+}
+
+.backdrop {
+  position: absolute;
+  border-radius: 999px;
+  filter: blur(48px);
+  opacity: 0.7;
+  pointer-events: none;
+}
+
+.halo-left {
+  top: -80px;
+  left: -60px;
+  width: 260px;
+  height: 260px;
+  background: rgba(255, 166, 87, 0.2);
+}
+
+.halo-right {
+  top: 110px;
+  right: -40px;
+  width: 320px;
+  height: 320px;
+  background: rgba(68, 197, 255, 0.18);
+}
+
+.control-panel,
+.stage-panel,
+.insight-panel {
+  position: relative;
+  z-index: 1;
+  background: rgba(10, 18, 34, 0.7);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 28px;
+  backdrop-filter: blur(18px);
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.24);
+}
+
+.control-panel {
+  display: grid;
+  gap: 20px;
+  max-width: 1200px;
+  margin: 0 auto 24px;
+  padding: 28px;
+}
+
+.workspace {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1.5fr 0.9fr;
+  gap: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.panel-heading h1,
+.panel-heading h2,
+.insight-card h3 {
+  margin: 0;
+  font-family: "Iowan Old Style", "Palatino Linotype", serif;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+}
+
+.panel-heading h1 {
+  max-width: 14ch;
+  font-size: clamp(2.4rem, 4vw, 4.4rem);
+  line-height: 0.95;
+}
+
+.panel-heading h2 {
+  font-size: 1.8rem;
+}
+
+.panel-copy,
+.stage-copy p,
+.status-card,
+.insight-card span {
+  color: rgba(236, 239, 248, 0.75);
+}
+
+.eyebrow,
+.card-label {
+  margin: 0 0 10px;
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #8ed8ff;
+}
+
+.sample-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.sample-pill,
+.phrase-chip {
+  border: 1px solid rgba(142, 216, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(142, 216, 255, 0.08);
+  color: #e7f7ff;
+}
+
+.sample-pill {
+  display: grid;
+  gap: 4px;
+  text-align: left;
+  padding: 10px 14px;
+  cursor: pointer;
+  transition:
+    transform 160ms ease,
+    border-color 160ms ease,
+    background 160ms ease;
+}
+
+.sample-pill:hover {
+  transform: translateY(-1px);
+  border-color: rgba(142, 216, 255, 0.45);
+  background: rgba(142, 216, 255, 0.14);
+}
+
+.sample-pill small {
+  color: rgba(231, 247, 255, 0.62);
+  font-size: 0.75rem;
+}
+
+.analyze-form {
+  display: grid;
+  gap: 16px;
+}
+
+.field-group {
+  display: grid;
+  gap: 10px;
+}
+
+.field-group span {
+  font-size: 0.92rem;
+  color: rgba(236, 239, 248, 0.88);
+}
+
+.field-group input {
+  width: 100%;
+  padding: 16px 18px;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 18px;
+  background: rgba(6, 12, 23, 0.66);
+  color: #ffffff;
+}
+
+.field-group input:focus {
+  outline: 2px solid rgba(142, 216, 255, 0.38);
+  outline-offset: 2px;
+}
+
+.analyze-button {
+  justify-self: start;
+  min-width: 180px;
+  padding: 14px 20px;
+  border: 0;
+  border-radius: 16px;
+  background: linear-gradient(135deg, #ffd38f, #ff996f);
+  color: #1f1306;
+  font-weight: 700;
+  cursor: pointer;
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease;
+  box-shadow: 0 14px 28px rgba(255, 153, 111, 0.24);
+}
+
+.analyze-button:hover:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.analyze-button:disabled {
+  cursor: wait;
+  opacity: 0.72;
+}
+
+.stage-panel,
+.insight-panel {
+  padding: 24px;
+}
+
+.stage-panel {
+  display: grid;
+  gap: 18px;
+  min-height: 520px;
+}
+
+.stage-frame {
+  position: relative;
+  display: grid;
+  place-items: center;
+  min-height: 380px;
+  border-radius: 22px;
+  background:
+    linear-gradient(rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01)),
+    radial-gradient(circle at center, rgba(73, 173, 255, 0.12), transparent 58%),
+    rgba(7, 12, 24, 0.74);
+  overflow: hidden;
+}
+
+.orbit {
+  position: absolute;
+  z-index: 0;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 999px;
+  animation: spin 24s linear infinite;
+}
+
+.orbit-a {
+  width: 76%;
+  height: 76%;
+}
+
+.orbit-b {
+  width: 54%;
+  height: 54%;
+  animation-direction: reverse;
+  animation-duration: 18s;
+}
+
+.orbit-c {
+  width: 32%;
+  height: 32%;
+  animation-duration: 12s;
+}
+
+.stage-placeholder {
+  position: relative;
+  z-index: 2;
+  max-width: 26ch;
+  text-align: center;
+  color: rgba(236, 239, 248, 0.74);
+}
+
+.stage-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+
+.stage-canvas canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.insight-panel {
+  display: grid;
+  gap: 18px;
+}
+
+.status-card,
+.insight-card {
+  padding: 18px;
+  border-radius: 20px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.status-card.error {
+  color: #ffd0c1;
+  border-color: rgba(255, 151, 122, 0.24);
+}
+
+.insight-grid {
+  display: grid;
+  gap: 14px;
+}
+
+.phrase-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.phrase-chip {
+  padding: 8px 12px;
+}
+
+.word-list {
+  display: grid;
+  gap: 10px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.word-list-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.03);
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (max-width: 900px) {
+  .app-shell {
+    padding: 20px;
+  }
+
+  .workspace {
+    grid-template-columns: 1fr;
+  }
+
+  .control-panel,
+  .stage-panel,
+  .insight-panel {
+    border-radius: 22px;
+  }
+}

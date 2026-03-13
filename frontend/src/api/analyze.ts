@@ -1,0 +1,1 @@
+export { analyzeArticle } from "./analyzeArticle";
